@@ -22,8 +22,6 @@ var adReadLine = -2;
 var adWriteChar = 0;
 var adWriteLine = 1;
 
-// ConnectModeEnum
-
 // SaveOptionsEnum 
 // http://msdn.microsoft.com/ja-jp/library/cc389870.aspx
 // ---------------------------------------------------------------------
