@@ -1,7 +1,4 @@
 
-// function
-// =====================================================================
-
 // header
 // ---------------------------------------------------------------------
 
@@ -139,13 +136,7 @@ function parse_activity( header, line ){
 
     var time = ls[ header.index_time ];
 
-    var name = ls[ header.index_name ];
-    if( name.charAt( 0 ) != '"' ){
-        name = '"' + name;
-    }
-    if( name.charAt( name.length - 1 ) != '"' ){
-        name = name + '"';
-    }
+    var name = add_double_quatation( ls[ header.index_name ] );
 
     if( header.index_duration ){
         duration = ls[ header.index_duration ];
@@ -175,43 +166,6 @@ function parse_activity( header, line ){
     );
 }
 
-// main
 // ---------------------------------------------------------------------
 
-function main(){
-    if( WScript.Arguments.length != 3 ){
-        WScript.Echo( "Arguments length must be 3." );
-        return;
-    }
-    var argument_in_charset = WScript.Arguments( 0 );
-    var argument_in_path    = WScript.Arguments( 1 );
-    var argument_out_path   = WScript.Arguments( 2 );
-
-    var sr     = new ActiveXObject( "ADODB.Stream" );
-    sr.Charset = argument_in_charset;
-    sr.Type    = adTypeText;
-    sr.Mode    = adModeWrite;
-    sr.Open();
-    sr.LoadFromFile( argument_in_path );
-
-    var sw     = new ActiveXObject( "ADODB.Stream" );
-    sw.Charset = "utf-8";
-    sw.Type    = adTypeText;
-    sw.Mode    = adModeReadWrite;
-    sw.Open();
-
-    var header_line = sr.ReadText( adReadLine );
-    var header      = parse_header( header_line );
-
-    while( !sr.EOS ){
-        var activity_line = sr.ReadText( adReadLine );
-        var activity      = parse_activity( header, activity_line );
-        activity.out( sw );
-    }
-
-    sr.Close();
-    sw.SaveToFile( argument_out_path, adSaveCreateOverWrite );
-    sw.Close();
-}
-
-main();
+parse( parse_header, parse_activity );

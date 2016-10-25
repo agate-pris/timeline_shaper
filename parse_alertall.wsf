@@ -1,5 +1,6 @@
 
 <job>
 <script language="JScript" src="constant.js"      />
+<script language="JScript" src="common.js"        />
 <script language="JScript" src="parse_alertall.js"/>
 </job>
