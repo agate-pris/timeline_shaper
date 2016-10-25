@@ -31,12 +31,21 @@ function parse( parser_header, parser_element ){
     sw.Mode    = adModeReadWrite;
     sw.Open();
 
-    var header_line = sr.ReadText( adReadLine );
-    var header      = parser_header( header_line );
+    var beader = null;
+    if( parser_header ){
+        var header_line = sr.ReadText( adReadLine );
+        header = parser_header( header_line );
+    }
 
     while( !sr.EOS ){
         var element_line = sr.ReadText( adReadLine );
-        var element      = parser_element( header, element_line );
+        var element      = null;
+        if( header ){
+            element = parser_element( header, element_line );
+        }
+        else{
+            element = parser_element( element_line );
+        }
         element.out( sw );
     }
 
